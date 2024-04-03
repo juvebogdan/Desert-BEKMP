@@ -1,0 +1,102 @@
+3.4.1 - 2024-01-29
+	* Fix on EvoLogics desert samples
+3.4.0 - 2024-01
+	* You can now specify 'ALL' if you want to install all Add-ons using command-line installer (and not wizard)
+	* Support for Electromagnetic propagation and PHY model thanks to Riccardo Tumiati <riccardo.tumiati@studenti.unipd.it>
+	* New module for mission coordinator. Thanks to Vincenzo Cimino
+	* Drivers for MODA modem
+	* Updated WOSS, Acoustic Toolbox, HDF
+	* Update miracle to latest version (1.4.0)
+3.3.2 - 2023-05-09
+	* Fixes on uw-csma-aloha
+	* New MAC protocol: OFDM Reservation MAC (thanks to Sara Falleni <falleni.s@husky.neu.edu>)
+3.3.1 - 2023-03-30
+	* Fixes on MAC protocols (uw-aloha and uw-csma-aloha)
+	* Fixes on AHOI SIR csv DB
+3.3.0 - 2023-01-16
+	* OFDM support (thanks to Sara Falleni <falleni.s@husky.neu.edu>)
+	* Updated WOSS and its dependancies
+	* New samples folder struct and organization
+	* Cross-compile support for Raspberry Pi Zero
+	* Cross-compile support for EvoLogics Debian Sandbox (thanks EvoLogics)
+	* Several bug fixes and improvements
+3.2.3 - 2021-03-14
+	* Improved doxygen documentation and project README
+	* Now doxygen is hosted on github pages
+3.2.2 - 2021-02-02
+	* Update zlib to Latest
+	* Fix hd5 to use local zlib
+	* Fix tclcl installation of zlib
+	* Fixes on doxygen and minor improvements
+3.2.0 - 2020-26-10
+	* Various fixes on uwApplication
+	* Improvements and new features on uwpolling
+	* Completely rewritten drivers for EvoLogics S2c modems
+	* New drivers and support for Uwahoi modems
+	* Various fixes and improvements on installer Framework
+	* Latest version of WOSS support
+	* New module for geographic and position based routing
+
+3.1.0 - 2019-07-03
+	* Fixed and improved samples
+	* Import new version of WOSS (1.7.0)
+	* New MAC protocol to support multiple PHYs
+	* New "position-based" routing protocol
+	* Support and simulation of Optical PHYs (Bluecomm)
+3.0.3 - 2017-07-19
+	* Import new version of Miracle with fix on ClMessage handling
+
+3.0.2 - 2017-07-16
+	* Add support and installer script to EvoLogics sandbox
+	* Imported a new patch for NS for real-time scheduler improvements
+	* Upload the right version of WOSS (1.5.1)
+
+3.0.1 - 2017-07-12
+	* Fix link to new doxygen on principal README.md
+
+3.0.0 - 2017-07-10
+	* New support of MAC ClMessages through PHY layers
+	* New CSMA-CA protocol
+	* New TDMA MAC protocol with framed slot
+	* Completely rewritten drivers for EvoLogics S2C modems with new features such as multipath and noise probing, clmessage support
+	* Add support to low level firmware of S2C EvoLogics modems
+	* Add a module (uwmulti_traffic_control) which permits to have N upper layers which generate traffic, mux/demuxing correctly the traffic
+	* Various fixes on existent protocols/modules and on installers
+	* Improved guide on doxygen
+
+2.1.0 - 2015-09-01
+	* Added uwrandomlib on mobility folder - A tool for use random variables
+	* Added uwsmposition mobility model
+	* Added uwtdma - A TDMA MAC protocol
+	* Improved interface with DESERT and EvoLogics S2C modems
+	* Added uwApplication - an Application Layer protocol to send real payloads on simulation and on real tests
+	* Added the packer of uwApplication to serialize the header and payload of the protocol with real modems
+	* Several bug-fixes on various modules
+	* Several memory leaks resolved
+	* Improvements and refactoring of uw-csma-aloha-triggered MAC protocol
+	* Added an optical channel model
+	* Added an optical PHY layer model
+	* Added an optical propagation model
+	* Added a PHY layer which implements Rogers model
+	* Added A PHY layer which implements Hermes modem model
+	* Added uwmulti_stack_controller to control more than one PHY layers on a node, choosing the best one predetermined metrics
+	* Added uwrov - An application layer protocol to simulate the control of ROVs
+	* Several new samples added
+	* Improved installation script
+    * New version of uwphysical module (Thanks to Randall Plate)
+
+2.0.5 - 2014-04-21
+    * Fixed the addon list in .addon.list (Removed another one)
+
+2.0.4 - 2014-04-20
+    * Fixed the addon list in .addon.list
+
+2.0.3 - 2014-04-17
+    * Fixed a bug on WOSS installer configure
+
+2.0.2 - 2014-04-15
+    * Removed .tex files from samples description folders
+    * Added a check for DBs on tcl samples requiring WOSS.
+
+2.0.0 - 2014-04-09
+    * Public release of DESERT Underwater Framework v2

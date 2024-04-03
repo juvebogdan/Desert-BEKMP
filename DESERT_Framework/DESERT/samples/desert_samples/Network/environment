@@ -1,0 +1,2 @@
+export PATH=/root/DESERT_Underwater/DESERT_Framework/DESERT/samples/desert_samples/Network/bin:${PATH}
+export LD_LIBRARY_PATH=/root/DESERT_Underwater/DESERT_Framework/DESERT/samples/desert_samples/Network/lib:${LD_LIBRARY_PATH}
