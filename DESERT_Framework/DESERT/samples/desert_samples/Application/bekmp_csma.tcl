@@ -1,76 +1,3 @@
-#
-# Copyright (c) 2015 Regents of the SIGNET lab, University of Padova.
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-# 1. Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-# 2. Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
-# 3. Neither the name of the University of Padova (SIGNET lab) nor the 
-#    names of its contributors may be used to endorse or promote products 
-#    derived from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED 
-# TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
-# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
-# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Author: Giovanni Toso <tosogiov@dei.unipd.it>
-# Version: 1.0.0
-# NOTE: tcl sample tested on Ubuntu 12.04, 64 bits OS
-#
-#########################################################################################
-##
-## NOTE: This script uses the PHY model "Module/MPhy/BPSK" of NS-Miracle in addPosition
-## with the module "MInterference/MIV" for the computation of interference. 
-## These two modules is used in this script to demonstrate their compatibility with
-## DESERT stack.
-## If you decide to use Module/UW/PHYSICAL from DESERT, it is suggested to use also 
-## Module/UW/INTERFERENCE (which is an extension of the one coming from NS-Miracle)
-## Anyways, it is possibile to use Module/UW/INTERFERENCE with Module/MPhy/BPSK whereas
-## it is not possibile to use MInterference/MIV with Module/UW/INTERFERENCE for compatibility
-## reasons
-##
-########################################################################################
-# ----------------------------------------------------------------------------------
-# This script depicts a very simple but complete stack in which two nodes send data
-# to a common sink. The second node is used by the first one as a relay to send data to the sink.
-# The routes are configured by using UW/STATICROUTING.
-# The application used to generate data is UW/CBR.
-# ----------------------------------------------------------------------------------
-# Stack
-#             Node 1                         Node 2                        Sink
-#   +--------------------------+   +--------------------------+   +-------------+------------+
-#   |  7. UW/CBR               |   |  7. UW/CBR               |   |  7. UW/CBR  | UW/CBR     |
-#   +--------------------------+   +--------------------------+   +-------------+------------+
-#   |  6. UW/UDP               |   |  6. UW/UDP               |   |  6. UW/UDP               |
-#   +--------------------------+   +--------------------------+   +--------------------------+
-#   |  5. UW/STATICROUTING     |   |  5. UW/STATICROUTING     |   |  5. UW/STATICROUTING     |
-#   +--------------------------+   +--------------------------+   +--------------------------+
-#   |  4. UW/IP                |   |  4. UW/IP                |   |  4. UW/IP                |
-#   +--------------------------+   +--------------------------+   +--------------------------+
-#   |  3. UW/MLL               |   |  3. UW/MLL               |   |  3. UW/MLL               |
-#   +--------------------------+   +--------------------------+   +--------------------------+
-#   |  2. UW/CSMA_ALOHA        |   |  2. UW/CSMA_ALOHA        |   |  2. UW/CSMA_ALOHA        |
-#   +--------------------------+   +--------------------------+   +--------------------------+
-#   |  1. Module/MPhy/BPSK     |   |  1. Module/MPhy/BPSK     |   |  1. Module/MPhy/BPSK     |
-#   +--------------------------+   +--------------------------+   +--------------------------+
-#            |         |                    |         |                   |         |       
-#   +----------------------------------------------------------------------------------------+
-#   |                                     UnderwaterChannel                                  |
-#   +----------------------------------------------------------------------------------------+
-
 ######################################
 # Flags to enable or disable options #
 ######################################
@@ -84,29 +11,21 @@ load libMiracle.so
 load libMiracleBasicMovement.so
 load libmphy.so
 load libmmac.so
-load libuwmmac_clmsgs.so
-load libuwphy_clmsgs.so
-load libUwmStd.so
 load libuwcsmaaloha.so
 load libuwip.so
-load libuwstaticrouting.so
 load libuwmll.so
 load libuwudp.so
 load libuwcbr.so
 load libuwsink.so
 load libuwinterference.so
-load libUwmStdPhyBpskTracer.so
 load libuwphy_clmsgs.so
 load libuwstats_utilities.so
 load libuwphysical.so
 load libuwdriftposition.so
 load libuwflooding.so
 
-# Specify the directory to search for files. Use "." for the current directory
 set directory "."
 
-# Use the glob command with -nocomplain to find all files starting with "tracefile"
-# in the specified directory. If no files match, an empty list is returned.
 set files [glob -nocomplain -directory $directory "tracefile*"]
 
 # Iterate over each file in the list and delete them
@@ -163,7 +82,7 @@ if {$opt(trace_files)} {
 # ### Channel ###
 # MPropagation/Underwater set practicalSpreading_ 2
 # MPropagation/Underwater set debug_              0
-# MPropagation/Underwater set windspeed_          3
+# MPropagation/Underwater set windspeed_          3 
 # MPropagation/Underwater set shipping_           1
 
 #########################
@@ -448,17 +367,6 @@ for {set id1 0} {$id1 < $opt(nn)} {incr id1}  {
     # $mll_sink3 addentry [$ipif($id1) addr] [ $mac($id1) addr]
 }
 
-# Setup positions
-# for {set id1 0} {$id1 < $opt(nn)} {incr id1}  {
-#     $position($id1) setX_ [expr 50 * $id1]
-#     $position($id1) setY_ [expr 50 * $id1]
-#     $position($id1) setZ_ -5
-# }
-# for {set id1 0} {$id1 < $opt(nsink)} {incr id1}  {
-#     $position_sink($id1) setX_ [expr 50 * $id1]
-#     $position_sink($id1) setY_ [expr 50 * $id1]
-#     $position_sink($id1) setZ_ [expr -100 * $id1]
-# }
 for {set id1 0} {$id1 < $opt(nn)} {incr id1} {
     # Generate random X, Y coordinates within the 2000x2000 area
     set randX [expr {int(rand() * 2000)}]
@@ -573,28 +481,11 @@ proc finish {} {
         set sum_cbr_sent_pkts  [expr $sum_cbr_sent_pkts + $cbr_sent_pkts]
         set sum_consumed_energy_tx  [expr $sum_consumed_energy_tx + $energy_consumed_tx]
         set sum_consumed_energy_rx  [expr $sum_consumed_energy_rx + $energy_consumed_rx]
-        puts "node($i) per:        $cbr_per"
+        #sputs "node($i) per:        $cbr_per"
         puts "node($i) rtt:        $cbr_rtt"
         puts "node($i) rtt std:    $cbr_rttstd"
         puts "---------------------------------------"
     }
-
-    # for {set i 0} {$i < $opt(nn)} {incr i}  {
-    #     set key "1, ${i}"
-    #     set cbr_throughput           [$cbr_sink($key) getthr]
-    #     #set cbr2_throughput           [$cbr_sink2($i) getthr]
-    #     set cbr_1_thr           [$cbr($i) getthr]
-    #     set cbr_sent_pkts        [$cbr($i) getsentpkts]
-    #     set cbr_rcv_pkts           [$cbr_sink($key) getrecvpkts]
-        
-    #     puts "cbr_sink($key) throughput                    : $cbr_throughput"
-    #     #puts "cbr_sink2($i) throughput                    : $cbr2_throughput"
-    #     puts "cbr($i) throughput                    : $cbr_1_thr"
-
-    #     set sum_cbr_throughput [expr $sum_cbr_throughput + $cbr_throughput]
-    #     set sum_cbr_sent_pkts  [expr $sum_cbr_sent_pkts + $cbr_sent_pkts]
-    #     set sum_cbr_rcv_pkts   [expr $sum_cbr_rcv_pkts + $cbr_rcv_pkts]
-    # }
         
     set ipheadersize        [$ipif(0) getipheadersize]
     set udpheadersize       [$udp(0) getudpheadersize]
@@ -611,10 +502,9 @@ proc finish {} {
     puts "Number of cross cluster connections : $sum_cross_connections"
     puts "Number of authentication requests   : $sum_auth_connections"
     puts "Overall consumption                 : [expr $sum_consumed_energy_rx + $sum_consumed_energy_tx]"
-    puts "Average PER                         : [expr $average_per / $opt(nn)]"
-    # puts "IP Pkt Header Size                  : $ipheadersize"
-    # puts "UDP Header Size                     : $udpheadersize"
-    # puts "CBR Header Size                     : $cbrheadersize"
+    puts "IP Pkt Header Size                  : $ipheadersize"
+    puts "UDP Header Size                     : $udpheadersize"
+    puts "CBR Header Size                     : $cbrheadersize"
   
     $ns flush-trace
     close $opt(tracefile)

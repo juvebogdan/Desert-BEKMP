@@ -567,38 +567,38 @@ UwSinkModule::recv(Packet *p)
 						sendPktKey(0.0, 10, 6, static_cast<nsaddr_t>(sourceAddress));
 					}
 					else {
-						// if (Sinkid != registeredSinkId) {
-						// 	if (receivedTrafficType == 8) {
-						// 		double reAuthExpirationTime = Scheduler::instance().clock() + reAuthExpiry;
-						// 		redisCommand(c, "HMSET %s expiration %f sinkId %d", reAuthKey.c_str(), reAuthExpirationTime, Sinkid);
-						// 		sendPktKey(0.0, 8, 8, static_cast<nsaddr_t>(sourceAddress));									
-						// 	}
-						// 	else {
-						// 		//paket je stigao i autentifikovan je nod, medjutim sada prelazi na drugi sink. potrebno je provjeriti je li vec odradjen reauth.
-						// 		//ako je reauth odradjen i paket je 10 onda nista.
-						// 		auto reAuthReply = (redisReply*)redisCommand(c, "HGETALL %s", reAuthKey.c_str());
-						// 		if (reAuthReply && reAuthReply->type == REDIS_REPLY_ARRAY) {
-						// 			if (reAuthReply->elements != 0) {
-						// 				double reAuthExpirationTime = 0;
-						// 				// The loop won't execute if authReply->elements is 0, i.e., the key doesn't exist or has no fields
-						// 				for (size_t i = 0; i < reAuthReply->elements; i += 2) {
-						// 					std::string field = reAuthReply->element[i]->str;
-						// 					if (field == "expiration") {
-						// 						reAuthExpirationTime = atof(reAuthReply->element[i + 1]->str);
-						// 					}
-						// 				}
-						// 				if (currentTime > reAuthExpirationTime || reAuthExpirationTime == 0) {
-						// 					// Authentication expired or not found, respond with traffic type 7
-						// 					sendPktKey(0.0, 10, 7, static_cast<nsaddr_t>(sourceAddress));
-						// 				}
-						// 			}
-						// 			else {
-						// 				sendPktKey(0.0, 10, 7, static_cast<nsaddr_t>(sourceAddress));
-						// 			}
-						// 		}
-						// 		if (reAuthReply) freeReplyObject(reAuthReply);
-						// 	}
-						// }
+						if (Sinkid != registeredSinkId) {
+							if (receivedTrafficType == 8) {
+								double reAuthExpirationTime = Scheduler::instance().clock() + reAuthExpiry;
+								redisCommand(c, "HMSET %s expiration %f sinkId %d", reAuthKey.c_str(), reAuthExpirationTime, Sinkid);
+								sendPktKey(0.0, 8, 8, static_cast<nsaddr_t>(sourceAddress));									
+							}
+							else {
+								//paket je stigao i autentifikovan je nod, medjutim sada prelazi na drugi sink. potrebno je provjeriti je li vec odradjen reauth.
+								//ako je reauth odradjen i paket je 10 onda nista.
+								auto reAuthReply = (redisReply*)redisCommand(c, "HGETALL %s", reAuthKey.c_str());
+								if (reAuthReply && reAuthReply->type == REDIS_REPLY_ARRAY) {
+									if (reAuthReply->elements != 0) {
+										double reAuthExpirationTime = 0;
+										// The loop won't execute if authReply->elements is 0, i.e., the key doesn't exist or has no fields
+										for (size_t i = 0; i < reAuthReply->elements; i += 2) {
+											std::string field = reAuthReply->element[i]->str;
+											if (field == "expiration") {
+												reAuthExpirationTime = atof(reAuthReply->element[i + 1]->str);
+											}
+										}
+										if (currentTime > reAuthExpirationTime || reAuthExpirationTime == 0) {
+											// Authentication expired or not found, respond with traffic type 7
+											sendPktKey(0.0, 10, 7, static_cast<nsaddr_t>(sourceAddress));
+										}
+									}
+									else {
+										sendPktKey(0.0, 10, 7, static_cast<nsaddr_t>(sourceAddress));
+									}
+								}
+								if (reAuthReply) freeReplyObject(reAuthReply);
+							}
+						}
 					}
 				}
 				else {
