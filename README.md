@@ -2,7 +2,7 @@
 
 The repository contains the desert simulation of the BEKMP protocol and reference protocol
 
-To run the simulation first install the DESERT simulator and then run the script in
+To run the simulation first install the DESERT simulator (https://github.com/signetlabdei/DESERT_Underwater) and then run the script in
 
 /DESERT/samples/desert_samples/Application/bekmp_csma.tcl
 
